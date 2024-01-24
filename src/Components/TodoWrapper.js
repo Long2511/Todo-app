@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import FlipMove from 'react-flip-move';
 
 uuidv4();
 
@@ -111,118 +112,129 @@ export const TodoWrapper = () => {
     }, []);
 
     return (
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="todos">
-                {(provided) => (
-                    <div
-                        className="TodoWrapper"
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
+        <div className="TodoWrapper">
+            <FormControl>
+                <h1>Today is a great day!</h1>
+                <TodoForm addTodo={addTodo} />
+                <div>
+                    <RadioGroup
+                        aria-labelledby="radio-buttons-group-label"
+                        defaultValue="all"
+                        name="radio-buttons-group"
+                        row={true}
+                        className="center-radio-group"
                     >
-                        <FormControl>
-                            <h1>Today is a great day!</h1>
-                            <TodoForm addTodo={addTodo} />
-                            <div>
-                                <RadioGroup
-                                    aria-labelledby="radio-buttons-group-label"
-                                    defaultValue="all"
-                                    name="radio-buttons-group"
-                                    row={true}
-                                    className="center-radio-group"
-                                >
-                                    <FormControlLabel
-                                        value="all"
-                                        control={<Radio />}
-                                        label="All"
-                                        onChange={() => setFilter('all')}
-                                    />
-                                    <FormControlLabel
-                                        value="completed"
-                                        control={<Radio />}
-                                        label="Completed"
-                                        onChange={() => setFilter('completed')}
-                                    />
-                                    <FormControlLabel
-                                        value="pending"
-                                        control={<Radio />}
-                                        label="Pending"
-                                        onChange={() => setFilter('pending')}
-                                    />
-                                </RadioGroup>
-                            </div>
-                            {filter === 'all' && (
-                                <RadioGroup
-                                    aria-labelledby="radio-buttons-group-label"
-                                    defaultValue="pending"
-                                    name="radio-buttons-group"
-                                    row={true}
-                                    className="center-radio-group"
-                                >
-                                    <FormControlLabel
-                                        value="pending"
-                                        control={<Radio />}
-                                        label="Sort by Pending"
-                                        onChange={() => setSortOrder('pending')}
-                                    />
-                                    <FormControlLabel
-                                        value="completed"
-                                        control={<Radio />}
-                                        label="Sort by Completed"
-                                        onChange={() =>
-                                            setSortOrder('completed')
-                                        }
-                                    />
-                                </RadioGroup>
-                            )}
-                            <TransitionGroup>
-                                {filterTodos().map((todo, index) => (
-                                    <CSSTransition
-                                        key={todo.id}
-                                        timeout={500}
-                                        classNames="fade"
-                                    >
-                                        <Draggable
-                                            key={todo.id}
-                                            draggableId={todo.id}
-                                            index={index}
-                                        >
-                                            {(provided) => (
-                                                <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                >
-                                                    {todo.isEditing ? (
-                                                        <EditTodoForm
-                                                            editTodo={editTask}
-                                                            task={todo}
-                                                            key={todo.id}
-                                                        />
-                                                    ) : (
-                                                        <Todo
-                                                            task={todo}
-                                                            key={todo.id}
-                                                            toggleComplete={
-                                                                toggleComplete
-                                                            }
-                                                            deleteTodo={
-                                                                deleteTodo
-                                                            }
-                                                            editTodo={editTodo}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    </CSSTransition>
-                                ))}
-                            </TransitionGroup>
-
-                            {provided.placeholder}
-                        </FormControl>
-                    </div>
+                        <FormControlLabel
+                            value="all"
+                            control={<Radio />}
+                            label="All"
+                            onChange={() => setFilter('all')}
+                        />
+                        <FormControlLabel
+                            value="completed"
+                            control={<Radio />}
+                            label="Completed"
+                            onChange={() => setFilter('completed')}
+                        />
+                        <FormControlLabel
+                            value="pending"
+                            control={<Radio />}
+                            label="Pending"
+                            onChange={() => setFilter('pending')}
+                        />
+                    </RadioGroup>
+                </div>
+                {filter === 'all' && (
+                    <RadioGroup
+                        aria-labelledby="radio-buttons-group-label"
+                        defaultValue="pending"
+                        name="radio-buttons-group"
+                        row={true}
+                        className="center-radio-group"
+                    >
+                        <FormControlLabel
+                            value="pending"
+                            control={<Radio />}
+                            label="Sort by Pending"
+                            onChange={() => setSortOrder('pending')}
+                        />
+                        <FormControlLabel
+                            value="completed"
+                            control={<Radio />}
+                            label="Sort by Completed"
+                            onChange={() => setSortOrder('completed')}
+                        />
+                    </RadioGroup>
                 )}
-            </Droppable>
-        </DragDropContext>
+                <DragDropContext onDragEnd={handleOnDragEnd}>
+                    <Droppable droppableId="todos">
+                        {(provided) => (
+                            <div
+                                className="drag-and-drop-contain"
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                            >
+                                <TransitionGroup>
+                                    <FlipMove>
+                                        {filterTodos().map((todo, index) => (
+                                            <CSSTransition
+                                                key={todo.id}
+                                                timeout={500}
+                                                classNames="fade"
+                                            >
+                                                <Draggable
+                                                    key={todo.id}
+                                                    draggableId={todo.id}
+                                                    index={index}
+                                                >
+                                                    {(provided) => (
+                                                        <div
+                                                            ref={
+                                                                provided.innerRef
+                                                            }
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                        >
+                                                            {todo.isEditing ? (
+                                                                <EditTodoForm
+                                                                    editTodo={
+                                                                        editTask
+                                                                    }
+                                                                    task={todo}
+                                                                    key={
+                                                                        todo.id
+                                                                    }
+                                                                />
+                                                            ) : (
+                                                                <Todo
+                                                                    task={todo}
+                                                                    key={
+                                                                        todo.id
+                                                                    }
+                                                                    toggleComplete={
+                                                                        toggleComplete
+                                                                    }
+                                                                    deleteTodo={
+                                                                        deleteTodo
+                                                                    }
+                                                                    editTodo={
+                                                                        editTodo
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            </CSSTransition>
+                                        ))}
+                                    </FlipMove>
+                                </TransitionGroup>
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </FormControl>
+        </div>
     );
 };
