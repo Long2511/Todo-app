@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FlipMove from 'react-flip-move';
 
 export const EditTodoForm = ({ editTodo, task }) => {
     const today = new Date();
@@ -28,38 +29,40 @@ export const EditTodoForm = ({ editTodo, task }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="TodoForm">
-            <div style={formStyle}>
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    className="todo-input-update"
-                    placeholder="Update task"
-                />
-                <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="todo-input-update description"
-                    placeholder="Update description"
-                />
-                {error && (
-                    <p className="error-message">
-                        Title of the task can not be empty
-                    </p>
-                )}
-                <input
-                    type="datetime-local"
-                    value={dueDate}
-                    min={formattedToday}
-                    onChange={(e) => setDueDate(e.target.value)}
-                    className="todo-input-update"
-                />
-                <button type="submit" className="add-todo-btn">
-                    Update
-                </button>
-            </div>
-        </form>
+        <FlipMove>
+            <form onSubmit={handleSubmit} className="TodoForm">
+                <div style={formStyle}>
+                    <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        className="todo-input"
+                        placeholder="Update task"
+                    />
+                    <input
+                        type="text"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="todo-input description"
+                        placeholder="Update description"
+                    />
+                    {error && (
+                        <p className="error-message">
+                            Title of the task can not be empty
+                        </p>
+                    )}
+                    <input
+                        type="datetime-local"
+                        value={dueDate}
+                        min={formattedToday}
+                        onChange={(e) => setDueDate(e.target.value)}
+                        className="todo-input date-time"
+                    />
+                    <button type="submit" className="add-todo-btn">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </FlipMove>
     );
 };
