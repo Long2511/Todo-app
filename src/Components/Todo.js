@@ -16,6 +16,13 @@ export const Todo = React.memo(
             width: '100%',
         };
         const dueDateObj = new Date(task.dueDate);
+        const formattedDueDate = dueDateObj.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
         const currentDate = new Date();
         const isDue = dueDateObj <= currentDate;
         const dueDateStyle = isDue ? { color: 'red' } : {};
@@ -38,7 +45,7 @@ export const Todo = React.memo(
                         </p>
                         <p className={'description'}>{task.description}</p>
                         <p className={'due-date'} style={dueDateStyle}>
-                            Due: {task.dueDate}
+                            Due: {formattedDueDate}
                         </p>
                     </div>
 
