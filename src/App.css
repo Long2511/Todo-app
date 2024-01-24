@@ -1,154 +1,160 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 * {
-  font-family: 'Open Sans', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #5cb0ef
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #5cb0ef
 }
 
 .App {
-  align-items: center;
+    align-items: center;
 }
 
 h1 {
-  color: #ffffff;
-  margin-bottom: 0.5rem;
-  font-size: 1.75rem;
+    color: #1d2b53;
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
 }
 
 .TodoWrapper {
-  background: rgba(255, 255, 255, 0.5);
-  margin-top: 5rem;
-  padding: 2rem;
-  border-radius: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    margin-top: 5rem;
+    padding: 2rem;
+    border-radius: 5px;
 }
 
 .TodoForm {
-  width: 500px;
+    width: 500px;
 }
 
 .todo-input {
-  outline: none;
-  background: none;
-  border: 1px solid #1d2b53;
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
-  width: 100%;
-  color: #ffffff;
+    outline: none;
+    background: none;
+    border: 1px solid #1d2b53;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    color: #1d2b53;
 }
 
 .todo-input-update {
-  background: none;
-  border: 1px solid #1d2b53;
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
-  width: 100%;
-  color: #000000;
+    background: none;
+    border: 1px solid #1d2b53;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    color: #000000;
 }
 
 .todo-input::placeholder {
-  color: #ffffff;
-  font-weight: bold;
+    color: #1d2b53;
+    font-weight: bold;
+}
+
+.todo-input {
+    color: #1d2b53;
+    font-weight: bold;
 }
 
 .add-todo-btn {
-  background: #1d2b53;
-  color: #fff;
-  border: none;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  justify-self: center;
+    background: #1d2b53;
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    justify-self: center;
 }
 
 .todo {
-  display: flex;
-  align-items: flex-start;
-  background: #ffffff;
-  padding: 0.75rem 1rem;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow-wrap: break-word
+    display: flex;
+    align-items: flex-start;
+    background: #ffffff;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    overflow-wrap: break-word
 }
 
 .todo-details {
-  text-align: left;
-  white-space: normal;
-  width: 350px;
+    text-align: left;
+    white-space: normal;
+    width: 350px;
 }
 
 
 .fa-trash {
-  margin-left: 0.75rem;
+    margin-left: 0.75rem;
 }
 
 .center-radio-group {
-  display: flex;
-  justify-content: center;
-  margin-top: -2rem
+    display: flex;
+    justify-content: center;
+    margin-top: -2rem
 }
 
 .todo-details .uncompleted {
-  font-weight: bold;
-  color: #000000;
-  cursor: pointer;
+    font-weight: bold;
+    color: #1d2b53;
+    cursor: pointer;
 }
-.todo-details .description{
-  color: #838282;
-  cursor: pointer;
+
+.todo-details .description {
+    color: #2b417c;
+    cursor: pointer;
 }
 
 .completed {
-  color: #757575;
-  text-decoration: line-through;
-  cursor: pointer;
+    color: #757575;
+    text-decoration: line-through;
+    cursor: pointer;
 }
 
-.todo.completed{
-  background: #e3e3e3;
+.todo.completed {
+    background: #e3e3e3;
 }
 
 .delete-icon {
-  margin-left: 0.5rem;
-  cursor: pointer;
+    margin-left: 0.5rem;
+    cursor: pointer;
 }
 
-.error-message{
-  color: red;
-  font-size: 0.75rem;
-  margin-top: -0.25rem;
-  margin-left: 1rem;
-  margin-bottom: 0.5rem;
+.error-message {
+    color: red;
+    font-size: 0.75rem;
+    margin-top: -0.25rem;
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
 }
 
-label{
-  margin: 1rem;
+label {
+    margin: 1rem;
 }
 
 .fade-enter {
-  opacity: 0;
+    opacity: 0;
 }
 
 .fade-enter-active {
-  opacity: 1;
-  transition: opacity 500ms;
+    opacity: 1;
+    transition: opacity 500ms;
 }
 
 .fade-exit {
-  opacity: 1;
+    opacity: 1;
 }
 
 .fade-exit-active {
-  opacity: 0;
-  transition: opacity 500ms;
+    opacity: 0;
+    transition: opacity 500ms;
 }
