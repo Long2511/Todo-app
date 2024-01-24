@@ -27,6 +27,31 @@ export const Todo = React.memo(
         const isDue = dueDateObj <= currentDate;
         const dueDateStyle = isDue ? { color: 'red' } : {};
 
+        const renderActionIcons = (task) => {
+            if (!task.completed) {
+                return (
+                    <div>
+                        <ModeIcon
+                            className="edit-icon"
+                            onClick={() => editTodo(task.id)}
+                        />
+                        <DeleteIcon
+                            className="delete-icon"
+                            onClick={() => deleteTodo(task.id)}
+                        />
+                    </div>
+                );
+            }
+            return (
+                <div>
+                    <DeleteIcon
+                        className="delete-icon"
+                        onClick={() => deleteTodo(task.id)}
+                    />
+                </div>
+            );
+        };
+
         return (
             <div
                 className={`todo ${task.completed ? 'completed' : 'uncompleted'}`}
@@ -50,18 +75,7 @@ export const Todo = React.memo(
                     </div>
 
                     <div style={style} className={'btn-container'}>
-                        {!task.completed && (
-                            <div>
-                                <ModeIcon
-                                    className="edit-icon"
-                                    onClick={() => editTodo(task.id)}
-                                />
-                                <DeleteIcon
-                                    className="delete-icon"
-                                    onClick={() => deleteTodo(task.id)}
-                                />
-                            </div>
-                        )}
+                        {renderActionIcons(task)}
                     </div>
                 </div>
             </div>

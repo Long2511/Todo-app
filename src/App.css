@@ -63,6 +63,10 @@ h1 {
     color: #1d2b53;
     font-weight: bold;
 }
+.btn-container{
+    display: flex;
+    justify-content: flex-end;
+}
 
 .add-todo-btn {
     background: #1d2b53;
