@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TodoForm } from './TodoForm';
 import { v4 as uuidv4 } from 'uuid';
 import { Todo } from './Todo';
@@ -9,7 +9,7 @@ import {
     Radio,
     RadioGroup,
 } from '@mui/material';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
 
@@ -167,7 +167,7 @@ export const TodoWrapper = () => {
                     </RadioGroup>
                 )}
                 <DragDropContext onDragEnd={handleOnDragEnd}>
-                    <Droppable droppableId="todos">
+                    <Droppable droppableId="drag-and-drop-contain">
                         {(provided) => (
                             <div
                                 className="drag-and-drop-contain"
