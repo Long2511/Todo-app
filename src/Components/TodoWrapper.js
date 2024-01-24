@@ -10,6 +10,7 @@ import {
     RadioGroup,
 } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 uuidv4();
 
@@ -18,12 +19,13 @@ export const TodoWrapper = () => {
     const [filter, setFilter] = useState('all');
     const [sortOrder, setSortOrder] = useState('pending');
 
-    const addTodo = (todo, description) => {
+    const addTodo = (todo, description, dueDate) => {
         const newTodos = [
             {
                 id: uuidv4(),
                 task: todo,
                 description: description,
+                dueDate: dueDate,
                 completed: false,
                 isEditing: false,
                 createdAt: Date.now(),
@@ -56,10 +58,16 @@ export const TodoWrapper = () => {
         );
     };
 
-    const editTask = (task, description, id) => {
+    const editTask = (task, description, dueDate, id) => {
         const newTodos = todos.map((todo) =>
             todo.id === id
-                ? { ...todo, task, description, isEditing: !todo.isEditing }
+                ? {
+                      ...todo,
+                      task,
+                      description,
+                      dueDate,
+                      isEditing: !todo.isEditing,
+                  }
                 : todo,
         );
         setTodos(newTodos);
@@ -166,39 +174,50 @@ export const TodoWrapper = () => {
                                     />
                                 </RadioGroup>
                             )}
-                            {filterTodos().map((todo, index) => (
-                                <Draggable
-                                    key={todo.id}
-                                    draggableId={todo.id}
-                                    index={index}
-                                >
-                                    {(provided) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
+                            <TransitionGroup>
+                                {filterTodos().map((todo, index) => (
+                                    <CSSTransition
+                                        key={todo.id}
+                                        timeout={500}
+                                        classNames="fade"
+                                    >
+                                        <Draggable
+                                            key={todo.id}
+                                            draggableId={todo.id}
+                                            index={index}
                                         >
-                                            {todo.isEditing ? (
-                                                <EditTodoForm
-                                                    editTodo={editTask}
-                                                    task={todo}
-                                                    key={todo.id}
-                                                />
-                                            ) : (
-                                                <Todo
-                                                    task={todo}
-                                                    key={todo.id}
-                                                    toggleComplete={
-                                                        toggleComplete
-                                                    }
-                                                    deleteTodo={deleteTodo}
-                                                    editTodo={editTodo}
-                                                />
+                                            {(provided) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                >
+                                                    {todo.isEditing ? (
+                                                        <EditTodoForm
+                                                            editTodo={editTask}
+                                                            task={todo}
+                                                            key={todo.id}
+                                                        />
+                                                    ) : (
+                                                        <Todo
+                                                            task={todo}
+                                                            key={todo.id}
+                                                            toggleComplete={
+                                                                toggleComplete
+                                                            }
+                                                            deleteTodo={
+                                                                deleteTodo
+                                                            }
+                                                            editTodo={editTodo}
+                                                        />
+                                                    )}
+                                                </div>
                                             )}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
+                                        </Draggable>
+                                    </CSSTransition>
+                                ))}
+                            </TransitionGroup>
+
                             {provided.placeholder}
                         </FormControl>
                     </div>

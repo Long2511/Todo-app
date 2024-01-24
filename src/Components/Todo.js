@@ -15,6 +15,10 @@ export const Todo = React.memo(
             justifyContent: 'space-between',
             width: '100%',
         };
+        const dueDateObj = new Date(task.dueDate);
+        const currentDate = new Date();
+        const isDue = dueDateObj <= currentDate;
+        const dueDateStyle = isDue ? { color: 'red' } : {};
 
         return (
             <div
@@ -33,6 +37,9 @@ export const Todo = React.memo(
                             {task.task}
                         </p>
                         <p className={'description'}>{task.description}</p>
+                        <p className={'due-date'} style={dueDateStyle}>
+                            Due: {task.dueDate}
+                        </p>
                     </div>
 
                     <div style={style} className={'btn-container'}>

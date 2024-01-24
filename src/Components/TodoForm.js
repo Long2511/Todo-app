@@ -4,14 +4,18 @@ export const TodoForm = ({ addTodo }) => {
     const [value, setValue] = useState('');
     const [description, setDescription] = useState('');
     const [error, setError] = useState(false);
+    const [dueDate, setDueDate] = useState('');
+    const today = new Date();
+    const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (value) {
-            addTodo(value, description);
+            addTodo(value, description, dueDate);
             setValue('');
             setDescription('');
             setError(false);
+            setDueDate('');
         } else {
             setError(true);
         }
@@ -43,6 +47,15 @@ export const TodoForm = ({ addTodo }) => {
                             onChange={(e) => setDescription(e.target.value)}
                             className="todo-input description"
                             placeholder="Add a description"
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="datetime-local"
+                            value={dueDate}
+                            min={formattedToday}
+                            onChange={(e) => setDueDate(e.target.value)}
+                            className="todo-input"
                         />
                     </div>
                     {error && (
