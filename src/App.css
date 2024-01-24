@@ -8,100 +8,129 @@
 }
 
 body {
-  background: #80BCBD;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #5cb0ef
 }
 
 .App {
-  text-align: center;
+  align-items: center;
 }
 
 h1 {
-  color: #AAD9BB;
+  color: #ffffff;
   margin-bottom: 0.5rem;
   font-size: 1.75rem;
 }
 
 .TodoWrapper {
-  background: #F9F7C9;
+  background: rgba(255, 255, 255, 0.5);
   margin-top: 5rem;
   padding: 2rem;
   border-radius: 5px;
 }
 
 .TodoForm {
-  width: 100%;
+  width: 500px;
 }
 
 .todo-input {
   outline: none;
   background: none;
-  border: 1px solid #80BCBD;
+  border: 1px solid #1d2b53;
   padding: 0.5rem 1rem;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  width: 300px;
-  color: #80BCBD;
+  margin-bottom: 1rem;
+  width: 100%;
+  color: #ffffff;
+}
+
+.todo-input-update {
+  background: none;
+  border: 1px solid #1d2b53;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  color: #000000;
 }
 
 .todo-input::placeholder {
-  color: #80BCBD;
+  color: #ffffff;
+  font-weight: bold;
 }
 
-.todo-btn {
-  background: #80BCBD;
+.add-todo-btn {
+  background: #1d2b53;
   color: #fff;
   border: none;
-  padding: 0.55rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
   cursor: pointer;
+  justify-self: center;
 }
 
-.Todo {
+.todo {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #AAD9BB;
-  color: #fff;
+  align-items: flex-start;
+  background: #ffffff;
   padding: 0.75rem 1rem;
   border-radius: 5px;
   margin-bottom: 1rem;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word
 }
 
-.TodoWrapper div label {
-  color: #80BCBD;
-  margin-bottom: 2rem;
+.todo-details {
+  text-align: left;
+  white-space: normal;
+  width: 350px;
 }
+
 
 .fa-trash {
   margin-left: 0.75rem;
 }
 
-.incompleted {
-  color: #F9F7C9;
+.center-radio-group {
+  display: flex;
+  justify-content: center;
+  margin-top: -2rem
+}
+
+.todo-details .uncompleted {
+  font-weight: bold;
+  color: #000000;
+  cursor: pointer;
+}
+.todo-details .description{
+  color: #838282;
   cursor: pointer;
 }
 
 .completed {
-  color: #F9F7C9;
+  color: #757575;
   text-decoration: line-through;
   cursor: pointer;
 }
 
-.edit-icon,
+.todo.completed{
+  background: #e3e3e3;
+}
+
 .delete-icon {
+  margin-left: 0.5rem;
   cursor: pointer;
+}
+
+.error-message{
+  color: red;
+  font-size: 0.75rem;
+  margin-top: -0.25rem;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 label{
   margin: 1rem;
-}
-.Todo {
-  transition: opacity 0.5s, transform 0.5s;
-}
-
-.Todo.fade-out {
-  opacity: 0;
-  transform: translateY(-20px);
 }
