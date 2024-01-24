@@ -16,6 +16,11 @@ export const TodoWrapper = () => {
     const [filter, setFilter] = useState('all');
     const [sortOrder, setSortOrder] = useState('pending');
 
+    const updateTodos = (newTodos) => {
+        setTodos(newTodos);
+        localStorage.setItem('todos', JSON.stringify(newTodos));
+    };
+
     const addTodo = (todo, description, dueDate) => {
         const newTodos = [
             {
@@ -29,22 +34,20 @@ export const TodoWrapper = () => {
             },
             ...todos,
         ];
-        setTodos(newTodos);
-        localStorage.setItem('todos', JSON.stringify(newTodos));
+        updateTodos(newTodos);
+
     };
 
     const toggleComplete = (id) => {
         const newTodos = todos.map((todo) =>
             todo.id === id ? { ...todo, completed: !todo.completed } : todo,
         );
-        setTodos(newTodos);
-        localStorage.setItem('todos', JSON.stringify(newTodos));
+        updateTodos(newTodos);
     };
 
     const deleteTodo = (id) => {
         const newTodos = todos.filter((todo) => todo.id !== id);
-        setTodos(newTodos);
-        localStorage.setItem('todos', JSON.stringify(newTodos));
+        updateTodos(newTodos);
     };
 
     const editTodo = (id) => {
@@ -67,8 +70,7 @@ export const TodoWrapper = () => {
                   }
                 : todo,
         );
-        setTodos(newTodos);
-        localStorage.setItem('todos', JSON.stringify(newTodos));
+        updateTodos(newTodos);
     };
 
     const filterTodos = () => {
@@ -99,8 +101,7 @@ export const TodoWrapper = () => {
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
 
-        setTodos(items);
-        localStorage.setItem('todos', JSON.stringify(items));
+        updateTodos(items);
     };
     const renderTodoItem = (todo) => {
         if (todo.isEditing) {
@@ -151,8 +152,12 @@ export const TodoWrapper = () => {
     };
 
     useEffect(() => {
-        const savedTodos = JSON.parse(localStorage.getItem('todos')) || [];
-        setTodos(savedTodos);
+        try {
+            const savedTodos = JSON.parse(localStorage.getItem('todos')) || [];
+            setTodos(savedTodos);
+        } catch (error) {
+            console.error('Failed to retrieve todos from localStorage:', error);
+        }
     }, []);
 
     return (
