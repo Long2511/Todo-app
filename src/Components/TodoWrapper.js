@@ -9,7 +9,7 @@ import {
     Radio,
     RadioGroup,
 } from '@mui/material';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
 
@@ -104,6 +104,7 @@ export const TodoWrapper = () => {
         items.splice(result.destination.index, 0, reorderedItem);
 
         setTodos(items);
+        localStorage.setItem('todos', JSON.stringify(items));
     };
 
     useEffect(() => {
