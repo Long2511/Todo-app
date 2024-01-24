@@ -5,7 +5,7 @@ export const EditTodoForm = ({ editTodo, task }) => {
     const today = new Date();
     const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     const dueDateObj = new Date(task.dueDate);
-    const formattedDueDate = `${dueDateObj.getFullYear()}-${String(dueDateObj.getMonth() + 1).padStart(2, '0')}-${String(dueDateObj.getDate()).padStart(2, '0')}T${String(dueDateObj.getHours()).padStart(2, '0')}:${String(dueDateObj.getMinutes()).padStart(2, '0')}`;
+    const formattedDueDate = isNaN(dueDateObj.getTime()) ? '' : `${dueDateObj.getFullYear()}-${String(dueDateObj.getMonth() + 1).padStart(2, '0')}-${String(dueDateObj.getDate()).padStart(2, '0')}T${String(dueDateObj.getHours()).padStart(2, '0')}:${String(dueDateObj.getMinutes()).padStart(2, '0')}`;
 
     const [value, setValue] = useState(task.task);
     const [description, setDescription] = useState(task.description);

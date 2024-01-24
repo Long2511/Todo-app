@@ -11,8 +11,6 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
 import SortAndFilter from "./SortAndFilter";
 
-uuidv4();
-
 export const TodoWrapper = () => {
     const [todos, setTodos] = useState([]);
     const [filter, setFilter] = useState('all');
