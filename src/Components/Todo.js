@@ -16,13 +16,16 @@ export const Todo = React.memo(
             width: '100%',
         };
         const dueDateObj = new Date(task.dueDate);
-        const formattedDueDate = dueDateObj.toLocaleString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
+        let formattedDueDate = 'No Due Date';
+        if (!isNaN(dueDateObj.getTime())) {
+            formattedDueDate = dueDateObj.toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+        }
         const currentDate = new Date();
         const isDue = dueDateObj <= currentDate;
         const dueDateStyle = isDue ? { color: 'red' } : {};

@@ -1,7 +1,11 @@
 import React from 'react';
 import { RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
-const SortAndFilter = ({ filter, setFilter, setSortOrder }) => {
+const SortAndFilter = ({ filter, setSortOrder, setFilter }) => {
+
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value);
+    };
     return (
         <>
             <div>
@@ -16,19 +20,19 @@ const SortAndFilter = ({ filter, setFilter, setSortOrder }) => {
                         value="all"
                         control={<Radio />}
                         label="All"
-                        onChange={() => setFilter('all')}
+                        onChange={handleFilterChange}
                     />
                     <FormControlLabel
                         value="completed"
                         control={<Radio />}
                         label="Completed"
-                        onChange={() => setFilter('completed')}
+                        onChange={handleFilterChange}
                     />
                     <FormControlLabel
                         value="pending"
                         control={<Radio />}
                         label="Pending"
-                        onChange={() => setFilter('pending')}
+                        onChange={handleFilterChange}
                     />
                 </RadioGroup>
             </div>

@@ -1,6 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    addTodo,
+    toggleComplete,
+    deleteTodo,
+    editTodo,
+    editTask,
+    setTodos,
+    setFilter,
+    setSortOrder
+} from '../redux/todosSlice';
+
 import { TodoForm } from './TodoForm';
-import { v4 as uuidv4 } from 'uuid';
 import { Todo } from './Todo';
 import { EditTodoForm } from './EditTodoForm';
 import {
@@ -12,102 +23,72 @@ import FlipMove from 'react-flip-move';
 import SortAndFilter from "./SortAndFilter";
 
 export const TodoWrapper = () => {
-    const [todos, setTodos] = useState([]);
-    const [filter, setFilter] = useState('all');
-    const [sortOrder, setSortOrder] = useState('pending');
+    const dispatch = useDispatch();
+    const todos = useSelector((state) => state.todos);
+    const addTodoHandler = (task, description, dueDate) => {
+        dispatch(addTodo({ task, description, dueDate }));
+    };
 
+    const toggleCompleteHandler = (id) => {
+        dispatch(toggleComplete(id));
+    };
+
+    const deleteTodoHandler = (id) => {
+        dispatch(deleteTodo(id));
+    };
+
+    const editTodoHandler = (id) => {
+        dispatch(editTodo(id));
+    };
+
+    const editTaskHandler = (task, description, dueDate, id) => {
+        dispatch(editTask({ task, description, dueDate, id }));
+    };
     const updateTodos = (newTodos) => {
-        setTodos(newTodos);
+        dispatch(setTodos(newTodos));
         localStorage.setItem('todos', JSON.stringify(newTodos));
     };
 
-    const addTodo = (todo, description, dueDate) => {
-        const newTodos = [
-            {
-                id: uuidv4(),
-                task: todo,
-                description: description,
-                dueDate: dueDate,
-                completed: false,
-                isEditing: false,
-                createdAt: Date.now(),
-            },
-            ...todos,
-        ];
-        updateTodos(newTodos);
-
-    };
-
-    const toggleComplete = (id) => {
-        const newTodos = todos.map((todo) =>
-            todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-        );
-        updateTodos(newTodos);
-    };
-
-    const deleteTodo = (id) => {
-        const newTodos = todos.filter((todo) => todo.id !== id);
-        updateTodos(newTodos);
-    };
-
-    const editTodo = (id) => {
-        setTodos(
-            todos.map((todo) =>
-                todo.id === id ? { ...todo, isEditing: !todo.isEditing } : todo,
-            ),
-        );
-    };
-
-    const editTask = (task, description, dueDate, id) => {
-        const newTodos = todos.map((todo) =>
-            todo.id === id
-                ? {
-                      ...todo,
-                      task,
-                      description,
-                      dueDate,
-                      isEditing: !todo.isEditing,
-                  }
-                : todo,
-        );
-        updateTodos(newTodos);
-    };
-
     const filterTodos = () => {
-        let filteredTodos;
-        switch (filter) {
-            case 'completed':
-                filteredTodos = todos.filter((todo) => todo.completed);
-                break;
-            case 'pending':
-                filteredTodos = todos.filter((todo) => !todo.completed);
-                break;
-            default:
-                filteredTodos = todos;
+        let filteredTodos = [];
+        if (Array.isArray(todos.todos)) {
+            switch (todos.filter) {
+                case 'completed':
+                    filteredTodos = todos.todos.filter((todo) => todo.completed);
+                    break;
+                case 'pending':
+                    filteredTodos = todos.todos.filter((todo) => !todo.completed);
+                    break;
+                default:
+                    filteredTodos = todos.todos;
+            }
+            switch (todos.sortOrder) {
+                case 'completed':
+                    return [...filteredTodos].sort((a, b) => b.completed - a.completed);
+                case 'pending':
+                    return [...filteredTodos].sort((a, b) => a.completed - b.completed);
+                default:
+                    return filteredTodos;
+            }
         }
-        switch (sortOrder) {
-            case 'completed':
-                return filteredTodos.sort((a, b) => b.completed - a.completed);
-            case 'pending':
-                return filteredTodos.sort((a, b) => a.completed - b.completed);
-            default:
-                return filteredTodos;
-        }
+        return filteredTodos;
     };
-
     const handleOnDragEnd = (result) => {
         if (!result.destination) return;
-        const items = Array.from(todos);
+        const items = Array.from(todos.todos);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
 
-        updateTodos(items);
+        if (items) {
+            updateTodos(items);
+        }
     };
+
     const renderTodoItem = (todo) => {
         if (todo.isEditing) {
             return (
                 <EditTodoForm
-                    editTodo={editTask}
+                    editTodo={editTaskHandler}
                     task={todo}
                     key={todo.id}
                 />
@@ -117,9 +98,9 @@ export const TodoWrapper = () => {
                 <Todo
                     task={todo}
                     key={todo.id}
-                    toggleComplete={toggleComplete}
-                    deleteTodo={deleteTodo}
-                    editTodo={editTodo}
+                    toggleComplete={toggleCompleteHandler}
+                    deleteTodo={deleteTodoHandler}
+                    editTodo={editTodoHandler}
                 />
             );
         }
@@ -150,23 +131,34 @@ export const TodoWrapper = () => {
             </CSSTransition>
         );
     };
-
     useEffect(() => {
-        try {
-            const savedTodos = JSON.parse(localStorage.getItem('todos')) || [];
-            setTodos(savedTodos);
-        } catch (error) {
-            console.error('Failed to retrieve todos from localStorage:', error);
+        const loadedTodos = localStorage.getItem('todos');
+        if (loadedTodos) {
+            dispatch(setTodos(JSON.parse(loadedTodos)));
         }
     }, []);
+
+    useEffect(() => {
+        const loadedTodos = localStorage.getItem('todos');
+        if (loadedTodos) {
+            dispatch(setTodos(JSON.parse(loadedTodos)));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]);
 
     return (
         <div className="TodoWrapper">
             <FormControl>
                 <h1>Today is a great day!</h1>
-                <TodoForm addTodo={addTodo} />
-                <SortAndFilter filter={filter} setFilter={setFilter} setSortOrder={setSortOrder}/>
-                <DragDropContext onDragEnd={handleOnDragEnd}>
+                <TodoForm addTodo={addTodoHandler} />
+                <SortAndFilter
+                    filter={todos.filter}
+                    setFilter={(filter) => dispatch(setFilter(filter))}
+                    setSortOrder={(sortOrder) => dispatch(setSortOrder(sortOrder))}
+                />                <DragDropContext onDragEnd={handleOnDragEnd}>
                     <Droppable droppableId="drag-and-drop-contain">
                         {(provided) => (
                             <div
@@ -176,7 +168,7 @@ export const TodoWrapper = () => {
                             >
                                 <TransitionGroup>
                                     <FlipMove>
-                                        {filterTodos().map(renderDraggableTodo)}
+                                        {todos && filterTodos().map(renderDraggableTodo)}
                                     </FlipMove>
                                 </TransitionGroup>
                                 {provided.placeholder}
@@ -187,4 +179,4 @@ export const TodoWrapper = () => {
             </FormControl>
         </div>
     );
-};
+}
