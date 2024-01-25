@@ -5,8 +5,8 @@ let initialState = { todos: [], filter: 'all', sortOrder: 'pending' };
 let existingState = localStorage.getItem('todos');
 try {
     existingState = existingState ? JSON.parse(existingState) : initialState;
-    existingState.filter = 'all'
-    existingState.sortOrder = 'pending'
+    existingState.filter = 'all';
+    existingState.sortOrder = 'pending';
     console.log(existingState);
 } catch (error) {
     existingState = initialState;
@@ -44,18 +44,26 @@ const todosSlice = createSlice({
             state.todos.push(newTodo);
         },
         toggleComplete: (state, action) => {
-            const index = state.todos.findIndex((todo) => todo.id === action.payload);
+            const index = state.todos.findIndex(
+                (todo) => todo.id === action.payload,
+            );
             state.todos[index].completed = !state.todos[index].completed;
         },
         deleteTodo: (state, action) => {
-            state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+            state.todos = state.todos.filter(
+                (todo) => todo.id !== action.payload,
+            );
         },
         editTodo: (state, action) => {
-            const index = state.todos.findIndex((todo) => todo.id === action.payload);
+            const index = state.todos.findIndex(
+                (todo) => todo.id === action.payload,
+            );
             state.todos[index].isEditing = !state.todos[index].isEditing;
         },
         editTask: (state, action) => {
-            const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
+            const index = state.todos.findIndex(
+                (todo) => todo.id === action.payload.id,
+            );
             state.todos[index] = {
                 ...state.todos[index],
                 task: action.payload.task,
@@ -71,16 +79,25 @@ const todosSlice = createSlice({
             }
         },
         setFilter: (state, action) => {
-            state.filter = action.payload
+            state.filter = action.payload;
             localStorage.setItem('todos', JSON.stringify(state));
         },
         setSortOrder: (state, action) => {
-            state.sortOrder = action.payload
+            state.sortOrder = action.payload;
             localStorage.setItem('todos', JSON.stringify(state));
         },
     },
 });
 
-export const { addTodo, toggleComplete, deleteTodo, editTodo, editTask, setTodos, setSortOrder, setFilter } = todosSlice.actions;
+export const {
+    addTodo,
+    toggleComplete,
+    deleteTodo,
+    editTodo,
+    editTask,
+    setTodos,
+    setSortOrder,
+    setFilter,
+} = todosSlice.actions;
 
 export default todosSlice.reducer;

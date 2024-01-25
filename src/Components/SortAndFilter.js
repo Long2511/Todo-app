@@ -2,7 +2,6 @@ import React from 'react';
 import { RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
 const SortAndFilter = ({ filter, setSortOrder, setFilter }) => {
-
     const handleFilterChange = (event) => {
         setFilter(event.target.value);
     };

@@ -21,15 +21,9 @@ export const TodoForm = ({ addTodo }) => {
         }
     };
 
-    const formStyle = {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 5,
-    };
-
     return (
         <form onSubmit={handleSubmit} className="TodoForm">
-            <div style={formStyle}>
+            <div className="form-style-row">
                 <div>
                     <div>
                         <input

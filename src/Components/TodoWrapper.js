@@ -8,19 +8,17 @@ import {
     editTask,
     setTodos,
     setFilter,
-    setSortOrder
+    setSortOrder,
 } from '../redux/todosSlice';
 
 import { TodoForm } from './TodoForm';
 import { Todo } from './Todo';
 import { EditTodoForm } from './EditTodoForm';
-import {
-    FormControl,
-} from '@mui/material';
+import { FormControl } from '@mui/material';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
-import SortAndFilter from "./SortAndFilter";
+import SortAndFilter from './SortAndFilter';
 
 export const TodoWrapper = () => {
     const dispatch = useDispatch();
@@ -54,19 +52,27 @@ export const TodoWrapper = () => {
         if (Array.isArray(todos.todos)) {
             switch (todos.filter) {
                 case 'completed':
-                    filteredTodos = todos.todos.filter((todo) => todo.completed);
+                    filteredTodos = todos.todos.filter(
+                        (todo) => todo.completed,
+                    );
                     break;
                 case 'pending':
-                    filteredTodos = todos.todos.filter((todo) => !todo.completed);
+                    filteredTodos = todos.todos.filter(
+                        (todo) => !todo.completed,
+                    );
                     break;
                 default:
                     filteredTodos = todos.todos;
             }
             switch (todos.sortOrder) {
                 case 'completed':
-                    return [...filteredTodos].sort((a, b) => b.completed - a.completed);
+                    return [...filteredTodos].sort(
+                        (a, b) => b.completed - a.completed,
+                    );
                 case 'pending':
-                    return [...filteredTodos].sort((a, b) => a.completed - b.completed);
+                    return [...filteredTodos].sort(
+                        (a, b) => a.completed - b.completed,
+                    );
                 default:
                     return filteredTodos;
             }
@@ -108,16 +114,8 @@ export const TodoWrapper = () => {
 
     const renderDraggableTodo = (todo, index) => {
         return (
-            <CSSTransition
-                key={todo.id}
-                timeout={500}
-                classNames="fade"
-            >
-                <Draggable
-                    key={todo.id}
-                    draggableId={todo.id}
-                    index={index}
-                >
+            <CSSTransition key={todo.id} timeout={500} classNames="fade">
+                <Draggable key={todo.id} draggableId={todo.id} index={index}>
                     {(provided) => (
                         <div
                             ref={provided.innerRef}
@@ -149,6 +147,12 @@ export const TodoWrapper = () => {
         localStorage.setItem('todos', JSON.stringify(todos));
     }, [todos]);
 
+    useEffect(() => {
+        if (todos.filter === 'all') {
+            dispatch(setSortOrder('pending'));
+        }
+    }, [todos.filter, dispatch]);
+
     return (
         <div className="TodoWrapper">
             <FormControl>
@@ -157,8 +161,11 @@ export const TodoWrapper = () => {
                 <SortAndFilter
                     filter={todos.filter}
                     setFilter={(filter) => dispatch(setFilter(filter))}
-                    setSortOrder={(sortOrder) => dispatch(setSortOrder(sortOrder))}
-                />                <DragDropContext onDragEnd={handleOnDragEnd}>
+                    setSortOrder={(sortOrder) =>
+                        dispatch(setSortOrder(sortOrder))
+                    }
+                />{' '}
+                <DragDropContext onDragEnd={handleOnDragEnd}>
                     <Droppable droppableId="drag-and-drop-contain">
                         {(provided) => (
                             <div
@@ -168,7 +175,10 @@ export const TodoWrapper = () => {
                             >
                                 <TransitionGroup>
                                     <FlipMove>
-                                        {todos && filterTodos().map(renderDraggableTodo)}
+                                        {todos &&
+                                            filterTodos().map(
+                                                renderDraggableTodo,
+                                            )}
                                     </FlipMove>
                                 </TransitionGroup>
                                 {provided.placeholder}
@@ -179,4 +189,4 @@ export const TodoWrapper = () => {
             </FormControl>
         </div>
     );
-}
+};
