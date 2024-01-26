@@ -1,0 +1,5 @@
+.form-style-row {
+    flex-direction: row;
+    align-items: center;
+    flex: 5;
+}
